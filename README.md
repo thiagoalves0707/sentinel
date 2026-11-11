@@ -34,6 +34,32 @@ sem relatório. Um pentester de verdade trabalha diferente — e é isso que o S
 | explicação genérica | **evidência reproduzível + correção concreta** para a sua stack |
 | fim da conversa | **relatório HTML profissional**, pronto pra entregar ou imprimir em PDF |
 
+## 🧭 O que acontece quando você pede "audita meu site"
+
+1. **Escopo primeiro.** O Claude pergunta se o alvo é seu (ou se você tem autorização), o que pode ser
+   testado e o que fica de fora — e registra. Sem isso, as ferramentas não rodam.
+2. **Varredura automática.** Ele roda sozinho a auditoria do site (cabeçalhos de segurança, cookies, HTTPS/TLS,
+   arquivos sensíveis expostos como `.git` e `.env`) e, se você tiver o código, a caça a senhas e chaves vazadas.
+3. **Investigação, pensando como atacante.** Mapeia páginas, login, formulários e API, e testa as falhas mais
+   comuns do OWASP Top 10 (injeção, controle de acesso, autenticação…) com **testes leves, que só provam que a
+   falha existe**. Se você tiver ferramentas como `nmap` e `ffuf` (no Kali, por exemplo), ele as usa e vai mais fundo.
+4. **Pergunta antes do que é pesado.** Upload de arquivo, várias tentativas de senha, rodar um exploit: ele
+   explica o que vai fazer e espera o seu ok.
+5. **Relatório no final.** Cada falha com nota de gravidade (CVSS 3.1), evidência e **como corrigir** — e, sendo
+   o sistema seu, a correção já vem pronta para a sua plataforma (nginx, Vercel, Next.js…).
+
+### ✅ O que ele faz × ❌ o que ele não faz
+
+| ✅ Faz | ❌ Não faz |
+|---|---|
+| Automatiza o trabalho repetitivo de recon e auditoria | **Não garante achar todas as falhas** — nenhuma ferramenta (nem pentester humano) garante |
+| Cobre bem as falhas comuns e de configuração | Falhas muito específicas da lógica do seu negócio dependem de investigar junto com você |
+| Investiga junto com você e explica o raciocínio | **Não ataca sistemas de terceiros**: alvo fora do escopo é bloqueado |
+| Separa falha **confirmada** de **suspeita** | Não derruba nem estraga nada: sem sobrecarga (DoS), sem apagar ou alterar dados |
+| Entrega relatório profissional com correções | Não substitui um pentest formal quando há exigência legal/contratual de um |
+
+Pense nele como um **pentester assistente**: faz a parte chata sozinho, investiga com você e entrega o relatório.
+
 ## ✨ O que vem dentro
 
 | Ferramenta | O que faz |
