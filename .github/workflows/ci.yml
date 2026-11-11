@@ -1,0 +1,32 @@
+# Roda os testes em Linux e Windows, em versões antigas e novas do Python,
+# e usa o próprio Sentinel para garantir que nenhum segredo entre no repositório.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.9", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # histórico completo para o scan de segredos
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Testes
+        run: python -m unittest discover -s tests -v
+      - name: Sem segredos no repositório (inclusive no histórico)
+        run: python scripts/secrets_scan.py . --git
+      - name: Relatório de exemplo ainda gera
+        run: python scripts/report.py --dir examples/lab-demo/engagement build

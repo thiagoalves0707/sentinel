@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relatório de Segurança · Laboratório Demo — Rede Interna</title>
+<style>
+:root{--bg:#0b0b0d;--panel:#131317;--line:#24242b;--txt:#e7e7ea;--mut:#9a9aa5;--red:#ef4444}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 "Segoe UI",system-ui,-apple-system,sans-serif}
+main{max-width:980px;margin:0 auto;padding:0 24px 80px}
+a{color:#f87171}
+code,pre{font-family:"JetBrains Mono","Cascadia Code",Consolas,monospace;font-size:.86em}
+code{background:#1d1d23;padding:.1em .4em;border-radius:4px}
+pre{background:#08080a;border:1px solid var(--line);border-left:3px solid var(--red);padding:14px 16px;
+    border-radius:8px;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin:56px 0 18px;
+   display:flex;align-items:center;gap:12px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.cover{padding:72px 0 40px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.cover::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(600px 240px at 85% 0%,rgba(239,68,68,.22),transparent 70%),
+  repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.015) 3px 4px);pointer-events:none}
+.brand{font:700 13px "JetBrains Mono",Consolas,monospace;color:var(--red);letter-spacing:.3em}
+.cover h1{font-size:40px;line-height:1.15;margin:18px 0 10px;font-weight:750}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;color:var(--mut);font-size:14px;margin-top:22px}
+.meta b{color:var(--txt);font-weight:600}
+.conf{display:inline-block;margin-top:26px;border:1px solid var(--red);color:var(--red);
+      font:600 11px Consolas,monospace;letter-spacing:.2em;padding:4px 10px;border-radius:4px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;border-top:3px solid}
+.stat .n{font-size:32px;font-weight:750;line-height:1}
+.stat .l{color:var(--mut);font-size:13px;margin-top:6px}
+.bar{display:flex;height:10px;border-radius:99px;overflow:hidden;margin:18px 0 6px;background:var(--panel)}
+.risk{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);
+      border-radius:12px;padding:16px 18px;margin-top:14px}
+.badge{display:inline-block;font:700 11px "Segoe UI",sans-serif;letter-spacing:.06em;text-transform:uppercase;
+       padding:3px 9px;border-radius:99px;color:#0b0b0d;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;color:var(--mut);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+td.mono{font-family:Consolas,monospace;font-size:13px;color:var(--mut)}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:8px 18px}
+.kv dt{color:var(--mut)} .kv dd{margin:0}
+.finding{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:18px 0;overflow:hidden;
+         border-left:4px solid}
+.fh{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
+.fh .id{font:600 13px Consolas,monospace;color:var(--mut);padding-top:3px}
+.fh h3{margin:0;font-size:19px;flex:1}
+.score{text-align:right;font:750 26px/1 "Segoe UI",sans-serif}
+.score small{display:block;font:500 10.5px Consolas,monospace;color:var(--mut);margin-top:6px;white-space:nowrap}
+@media (max-width:700px){.fh{flex-wrap:wrap}.score{text-align:left;width:100%}.score small{white-space:normal;overflow-wrap:anywhere}}
+.fb{padding:6px 22px 18px}
+.fb h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;padding:12px 22px 0}
+.tag{font-size:12px;color:var(--mut);background:#1b1b21;border:1px solid var(--line);padding:2px 10px;border-radius:99px}
+.empty{color:var(--mut);background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:22px;text-align:center}
+footer{color:var(--mut);font-size:12px;text-align:center;margin-top:60px}
+@media (max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.kv{grid-template-columns:1fr}.cover h1{font-size:30px}}
+@media print{
+  :root{--bg:#fff;--panel:#fff;--line:#ddd;--txt:#111;--mut:#555}
+  body{font-size:12px} .cover::before{display:none} pre{background:#f6f6f6}
+  .finding{break-inside:avoid} h2{break-after:avoid}
+}
+</style></head><body><main>
+<header class="cover">
+  <div class="brand">▲ SENTINEL // RELATÓRIO DE SEGURANÇA</div>
+  <h1>Laboratório Demo — Rede Interna</h1>
+  <div class="meta">
+    <span>Cliente <b>Lab Sentinel (fictício)</b></span>
+    <span>Data <b>2026-11-10</b></span>
+    <span>Responsável <b>Thiago Alves Santana</b></span>
+    <span>Achados <b>5</b></span>
+  </div>
+  <span class="conf">CONFIDENCIAL</span>
+</header>
+
+<h2>Resumo executivo</h2>
+<p>O teste avaliou a rede de laboratório <strong>10.10.10.0/28</strong> (exceto o gateway 10.10.10.1). Foram encontrados <strong>2 problemas críticos/altos que, juntos, dão acesso total aos dados da intranet</strong> sem precisar de nenhuma senha:</p>
+<ul><li>o <strong>Redis</strong> responde a qualquer um na rede, sem autenticação;</li><li>o <strong>FTP anônimo</strong> entrega um backup com a senha do banco de dados.</li></ul>
+<p>Recomendamos, nesta ordem: fechar o Redis e o FTP anônimo hoje, trocar a senha do banco e, em seguida, desativar o SMBv1 e exigir assinatura SMB no servidor de arquivos.</p>
+<div class="stats"><div class="stat" style="border-top-color:#ff2d55"><div class="n">1</div><div class="l">Crítica</div></div><div class="stat" style="border-top-color:#ef4444"><div class="n">2</div><div class="l">Alta</div></div><div class="stat" style="border-top-color:#f59e0b"><div class="n">2</div><div class="l">Média</div></div><div class="stat" style="border-top-color:#38bdf8"><div class="n">0</div><div class="l">Baixa</div></div><div class="stat" style="border-top-color:#8b8b95"><div class="n">0</div><div class="l">Informativa</div></div></div>
+<div class="bar"><span style="width:20.00%;background:#ff2d55"></span><span style="width:40.00%;background:#ef4444"></span><span style="width:40.00%;background:#f59e0b"></span></div>
+<div class="risk"><span class="badge" style="background:#ff2d55">Crítica</span><div><b>Risco geral: Crítica.</b> Há falhas que permitem comprometimento sério com pouco esforço. Corrija imediatamente.</div></div>
+
+<h2>Escopo e autorização</h2>
+<dl class="kv"><dt>Autorização</dt><dd>Laboratório próprio, rede isolada 10.10.10.0/28</dd><dt>Modalidade</dt><dd>ctf</dd><dt>Dentro do escopo</dt><dd><code>10.10.10.0/28</code><br><code>*.lab.local</code></dd><dt>Fora do escopo</dt><dd><code>10.10.10.1</code></dd><dt>Regras</dt><dd>Sem negação de serviço · sem ações destrutivas · máx. 10 req/s · gateway 10.10.10.1 é da infraestrutura do lab</dd></dl>
+
+<h2>Metodologia</h2>
+<p>O teste seguiu as fases do PTES/OWASP WSTG, sempre restrito ao escopo acima:</p>
+<ul><li><strong>Reconhecimento:</strong> mapeamento de hosts, portas, serviços e tecnologias.</li><li><strong>Enumeração e análise:</strong> identificação de versões, configurações e superfícies de ataque.</li><li><strong>Validação:</strong> confirmação manual de cada vulnerabilidade com a prova mínima necessária, sem alterar dados nem afetar a disponibilidade.</li><li><strong>Classificação:</strong> severidade pelo CVSS v3.1 (nota base) e recomendação de correção.</li></ul>
+
+<h2>Visão geral dos achados</h2>
+<table><tr><th>ID</th><th>Achado</th><th>Severidade</th><th>CVSS</th><th>Alvo</th></tr><tr><td class="mono">SNT-002</td><td><a href="#SNT-002">Redis sem autenticação exposto na rede</a></td><td><span class="badge" style="background:#ff2d55">Crítica</span></td><td class="mono">9.8</td><td class="mono">10.10.10.5:6379</td></tr><tr><td class="mono">SNT-001</td><td><a href="#SNT-001">FTP anônimo expõe backup de configuração com credenciais</a></td><td><span class="badge" style="background:#ef4444">Alta</span></td><td class="mono">7.5</td><td class="mono">10.10.10.5:21</td></tr><tr><td class="mono">SNT-003</td><td><a href="#SNT-003">SMBv1 habilitado</a></td><td><span class="badge" style="background:#ef4444">Alta</span></td><td class="mono">7.5</td><td class="mono">10.10.10.7:445</td></tr><tr><td class="mono">SNT-006</td><td><a href="#SNT-006">Painel da intranet sem limite de tentativas de login</a></td><td><span class="badge" style="background:#f59e0b">Média</span></td><td class="mono">5.3</td><td class="mono">http://10.10.10.5/login</td></tr><tr><td class="mono">SNT-004</td><td><a href="#SNT-004">Assinatura SMB não exigida</a></td><td><span class="badge" style="background:#f59e0b">Média</span></td><td class="mono">4.2</td><td class="mono">10.10.10.7:445</td></tr></table>
+
+<h2>Achados em detalhe</h2>
+<article class="finding" id="SNT-002" style="border-left-color:#ff2d55"><div class="fh"><span class="id">SNT-002</span><h3>Redis sem autenticação exposto na rede<br><span class="badge" style="background:#ff2d55">Crítica</span></h3><div class="score" style="color:#ff2d55">9.8<small>CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</small></div></div><div class="tags"><span class="tag">10.10.10.5:6379</span><span class="tag">Exposição de serviço</span></div><div class="fb"><h4>Descrição</h4><p>O Redis 5.0.7 em <strong>10.10.10.5:6379</strong> aceita comandos sem senha (<code>requirepass</code> não definido) e escuta em todas as interfaces.</p><h4>Impacto</h4><p>Leitura e alteração de todos os dados em cache (incluindo sessões da intranet). Com <code>CONFIG SET dir</code>, um atacante pode gravar arquivos no servidor e chegar a execução de código.</p><h4>Evidência</h4><pre>$ redis-cli -h 10.10.10.5 INFO server
+# Server
+redis_version:5.0.7
+redis_mode:standalone
+os:Linux 5.4.0-216-generic x86_64
+
+$ redis-cli -h 10.10.10.5 DBSIZE
+(integer) 1842</pre><h4>Recomendação</h4><ul><li>Definir <code>requirepass</code> (ou ACLs no Redis 6+)</li><li><code>bind 127.0.0.1</code> e <code>protected-mode yes</code></li><li>Bloquear a porta 6379 no firewall</li><li>Renomear/desabilitar <code>CONFIG</code>, <code>FLUSHALL</code> e <code>DEBUG</code></li></ul><h4>Referências</h4><ul><li><a href="https://redis.io/docs/latest/operate/oss_and_stack/management/security/">https://redis.io/docs/latest/operate/oss_and_stack/management/security/</a></li></ul></div></article><article class="finding" id="SNT-001" style="border-left-color:#ef4444"><div class="fh"><span class="id">SNT-001</span><h3>FTP anônimo expõe backup de configuração com credenciais<br><span class="badge" style="background:#ef4444">Alta</span></h3><div class="score" style="color:#ef4444">7.5<small>CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N</small></div></div><div class="tags"><span class="tag">10.10.10.5:21</span><span class="tag">Exposição de serviço</span></div><div class="fb"><h4>Descrição</h4><p>O vsftpd aceita login <code>anonymous</code> e o diretório <code>backups/</code> contém <code>intranet-config.bak</code>, legível por qualquer pessoa.</p><h4>Impacto</h4><p>O arquivo traz usuário e senha do banco de dados da intranet em texto puro.</p><h4>Evidência</h4><pre>ftp&gt; login anonymous
+230 Login successful.
+ftp&gt; ls backups
+-rw-r--r--  1 ftp ftp  2311 intranet-config.bak
+
+(conteúdo omitido do relatório — credencial guardada em loot/, fora do controle de versão)</pre><h4>Recomendação</h4><ul><li>Desabilitar <code>anonymous_enable</code> no vsftpd</li><li>Remover backups do diretório público</li><li><strong>Trocar a senha do banco</strong>: ela deve ser considerada comprometida</li></ul></div></article><article class="finding" id="SNT-003" style="border-left-color:#ef4444"><div class="fh"><span class="id">SNT-003</span><h3>SMBv1 habilitado<br><span class="badge" style="background:#ef4444">Alta</span></h3><div class="score" style="color:#ef4444">7.5<small>CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H</small></div></div><div class="tags"><span class="tag">10.10.10.7:445</span><span class="tag">Exposição de serviço</span></div><div class="fb"><h4>Descrição</h4><p>O Samba em 10.10.10.7 ainda negocia o dialeto <strong>NT LM 0.12 (SMBv1)</strong>.</p><h4>Evidência</h4><pre>nmap --script smb-protocols -p445 10.10.10.7
+  NT LM 0.12 (SMBv1) [dangerous, but default]</pre><h4>Recomendação</h4><p>No smb.conf: <code>server min protocol = SMB2_10</code>. Reinicie o serviço.</p><h4>Referências</h4><ul><li><a href="https://learn.microsoft.com/windows-server/storage/file-server/troubleshoot/detect-enable-and-disable-smbv1-v2-v3">https://learn.microsoft.com/windows-server/storage/file-server/troubleshoot/detect-enable-and-disable-smbv1-v2-v3</a></li></ul></div></article><article class="finding" id="SNT-006" style="border-left-color:#f59e0b"><div class="fh"><span class="id">SNT-006</span><h3>Painel da intranet sem limite de tentativas de login<br><span class="badge" style="background:#f59e0b">Média</span></h3><div class="score" style="color:#f59e0b">5.3<small>CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N</small></div></div><div class="tags"><span class="tag">http://10.10.10.5/login</span><span class="tag">A07 Identification and Authentication Failures</span></div><div class="fb"><h4>Descrição</h4><p>O formulário de login aceitou 50 tentativas seguidas com senha errada sem bloqueio, atraso ou CAPTCHA (teste limitado a 50 tentativas, conforme as regras).</p><h4>Recomendação</h4><p>Bloqueio progressivo por conta/IP, atraso exponencial e MFA para contas administrativas.</p><h4>Referências</h4><ul><li><a href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/</a></li></ul></div></article><article class="finding" id="SNT-004" style="border-left-color:#f59e0b"><div class="fh"><span class="id">SNT-004</span><h3>Assinatura SMB não exigida<br><span class="badge" style="background:#f59e0b">Média</span></h3><div class="score" style="color:#f59e0b">4.2<small>CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N</small></div></div><div class="tags"><span class="tag">10.10.10.7:445</span><span class="tag">Exposição de serviço</span></div><div class="fb"><h4>Descrição</h4><p>Permite ataques de relay NTLM na rede interna.</p><h4>Evidência</h4><pre>nmap: 445/tcp open microsoft-ds Samba smbd 4.6.2</pre><h4>Recomendação</h4><p>No smb.conf: <code>server signing = mandatory</code>.</p></div></article>
+
+<h2>Apêndice · Registro de atividades</h2>
+<table><tr><th>Quando</th><th>Ação</th><th>Alvo</th><th>Resultado</th></tr><tr><td class="mono">2026-11-10 22:17:43</td><td><code>escopo criado</code></td><td class="mono">10.10.10.0/28, *.lab.local</td><td>Laboratório próprio, rede isolada 10.10.10.0/28</td></tr><tr><td class="mono">2026-11-10 22:17:44</td><td><code>nmap -sV -sC -T3 -oX recon/nmap.xml 10.10.10.0/28</code></td><td class="mono">10.10.10.0/28</td><td>3 hosts up</td></tr><tr><td class="mono">2026-11-10 22:17:44</td><td><code>nmap_parse nmap-demo.xml</code></td><td class="mono"></td><td>3 host(s), 8 porta(s), 5 risco(s)</td></tr><tr><td class="mono">2026-11-10 22:18:06</td><td><code>redis-cli -h 10.10.10.5 INFO server</code></td><td class="mono">10.10.10.5:6379</td><td>respondeu sem senha (redis_version:5.0.7)</td></tr><tr><td class="mono">2026-11-10 22:18:07</td><td><code>ftp 10.10.10.5 (anonymous) → ls backups</code></td><td class="mono">10.10.10.5:21</td><td>backups/intranet-config.bak legível</td></tr><tr><td class="mono">2026-11-10 22:18:07</td><td><code>smbclient -N -L //10.10.10.7</code></td><td class="mono">10.10.10.7</td><td>shares: public, IPC$</td></tr><tr><td class="mono">2026-11-10 22:18:07</td><td><code>achado atualizado: SNT-002</code></td><td class="mono">10.10.10.5:6379</td><td>confirmado / critical</td></tr><tr><td class="mono">2026-11-10 22:18:07</td><td><code>achado atualizado: SNT-001</code></td><td class="mono">10.10.10.5:21</td><td>confirmado / high</td></tr><tr><td class="mono">2026-11-10 22:18:07</td><td><code>achado atualizado: SNT-003</code></td><td class="mono">10.10.10.7:445</td><td>confirmado / high</td></tr><tr><td class="mono">2026-11-10 22:18:07</td><td><code>achado atualizado: SNT-004</code></td><td class="mono">10.10.10.7:445</td><td>confirmado / medium</td></tr><tr><td class="mono">2026-11-10 22:18:07</td><td><code>achado atualizado: SNT-005</code></td><td class="mono">10.10.10.7:3389</td><td>falso positivo / medium</td></tr><tr><td class="mono">2026-11-10 22:18:08</td><td><code>achado registrado: Painel da intranet sem limite de tentativas de login</code></td><td class="mono">http://10.10.10.5/login</td><td>SNT-006</td></tr><tr><td class="mono">2026-11-10 22:18:08</td><td><code>relatório gerado</code></td><td class="mono"></td><td>5 achado(s)</td></tr></table>
+
+<footer>Gerado pelo Sentinel v1.0.0 · CVSS v3.1 · Documento confidencial — distribua apenas aos responsáveis.</footer>
+</main></body></html>

@@ -1,0 +1,90 @@
+[
+  {
+    "ip": "10.10.10.5",
+    "hostnames": [
+      "web01.lab.local"
+    ],
+    "os": "Linux 5.4",
+    "ports": [
+      {
+        "port": 21,
+        "proto": "tcp",
+        "service": "ftp",
+        "version": "vsftpd 3.0.3",
+        "scripts": {
+          "ftp-anon": "Anonymous FTP login allowed (FTP code 230)\ndrwxr-xr-x  2 ftp ftp 4096 backups"
+        }
+      },
+      {
+        "port": 22,
+        "proto": "tcp",
+        "service": "ssh",
+        "version": "OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 Ubuntu Linux; protocol 2.0",
+        "scripts": {}
+      },
+      {
+        "port": 80,
+        "proto": "tcp",
+        "service": "http",
+        "version": "Apache httpd 2.4.41 (Ubuntu)",
+        "scripts": {
+          "http-title": "Intranet - Login"
+        }
+      },
+      {
+        "port": 6379,
+        "proto": "tcp",
+        "service": "redis",
+        "version": "Redis key-value store 5.0.7",
+        "scripts": {}
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.7",
+    "hostnames": [
+      "files.lab.local"
+    ],
+    "os": "",
+    "ports": [
+      {
+        "port": 139,
+        "proto": "tcp",
+        "service": "netbios-ssn",
+        "version": "Samba smbd 4.6.2",
+        "scripts": {}
+      },
+      {
+        "port": 445,
+        "proto": "tcp",
+        "service": "microsoft-ds",
+        "version": "Samba smbd 4.6.2",
+        "scripts": {
+          "smb-protocols": "dialects: \n  NT LM 0.12 (SMBv1) [dangerous, but default]\n  2.02\n  3.11",
+          "smb2-security-mode": "3:1:1: \n  Message signing enabled but not required"
+        }
+      },
+      {
+        "port": 3389,
+        "proto": "tcp",
+        "service": "ms-wbt-server",
+        "version": "xrdp",
+        "scripts": {}
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.1",
+    "hostnames": [],
+    "os": "",
+    "ports": [
+      {
+        "port": 443,
+        "proto": "tcp",
+        "service": "https",
+        "version": "pfSense",
+        "scripts": {}
+      }
+    ]
+  }
+]

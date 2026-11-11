@@ -1,0 +1,8 @@
+# trabalho real nunca vai pro git (escopo de cliente, evidências, credenciais)
+/engagement/
+loot/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example

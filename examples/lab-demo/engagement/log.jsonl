@@ -1,0 +1,14 @@
+{"ts": "2026-11-10T22:17:43-03:00", "action": "escopo criado", "target": "10.10.10.0/28, *.lab.local", "tool": "scope.py", "note": "Laboratório próprio, rede isolada 10.10.10.0/28", "result": ""}
+{"ts": "2026-11-10T22:17:44-03:00", "action": "nmap -sV -sC -T3 -oX recon/nmap.xml 10.10.10.0/28", "target": "10.10.10.0/28", "tool": "nmap", "note": "", "result": "3 hosts up"}
+{"ts": "2026-11-10T22:17:44-03:00", "action": "nmap_parse nmap-demo.xml", "target": "", "tool": "nmap_parse.py", "note": "", "result": "3 host(s), 8 porta(s), 5 risco(s)"}
+{"ts": "2026-11-10T22:18:06-03:00", "action": "redis-cli -h 10.10.10.5 INFO server", "target": "10.10.10.5:6379", "tool": "redis-cli", "note": "", "result": "respondeu sem senha (redis_version:5.0.7)"}
+{"ts": "2026-11-10T22:18:07-03:00", "action": "ftp 10.10.10.5 (anonymous) → ls backups", "target": "10.10.10.5:21", "tool": "ftp", "note": "", "result": "backups/intranet-config.bak legível"}
+{"ts": "2026-11-10T22:18:07-03:00", "action": "smbclient -N -L //10.10.10.7", "target": "10.10.10.7", "tool": "smbclient", "note": "", "result": "shares: public, IPC$"}
+{"ts": "2026-11-10T22:18:07-03:00", "action": "achado atualizado: SNT-002", "target": "10.10.10.5:6379", "tool": "report.py", "note": "", "result": "confirmado / critical"}
+{"ts": "2026-11-10T22:18:07-03:00", "action": "achado atualizado: SNT-001", "target": "10.10.10.5:21", "tool": "report.py", "note": "", "result": "confirmado / high"}
+{"ts": "2026-11-10T22:18:07-03:00", "action": "achado atualizado: SNT-003", "target": "10.10.10.7:445", "tool": "report.py", "note": "", "result": "confirmado / high"}
+{"ts": "2026-11-10T22:18:07-03:00", "action": "achado atualizado: SNT-004", "target": "10.10.10.7:445", "tool": "report.py", "note": "", "result": "confirmado / medium"}
+{"ts": "2026-11-10T22:18:07-03:00", "action": "achado atualizado: SNT-005", "target": "10.10.10.7:3389", "tool": "report.py", "note": "", "result": "falso positivo / medium"}
+{"ts": "2026-11-10T22:18:08-03:00", "action": "achado registrado: Painel da intranet sem limite de tentativas de login", "target": "http://10.10.10.5/login", "tool": "report.py", "note": "", "result": "SNT-006"}
+{"ts": "2026-11-10T22:18:08-03:00", "action": "relatório gerado", "target": "", "tool": "report.py", "note": "", "result": "5 achado(s)"}
+{"ts": "2026-11-10T22:18:54-03:00", "action": "relatório gerado", "target": "", "tool": "report.py", "note": "", "result": "5 achado(s)"}

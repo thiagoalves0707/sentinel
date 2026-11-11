@@ -1,0 +1,103 @@
+[
+  {
+    "id": "SNT-001",
+    "status": "confirmado",
+    "found_at": "2026-11-10T22:17:44-03:00",
+    "title": "FTP anônimo expõe backup de configuração com credenciais",
+    "target": "10.10.10.5:21",
+    "severity": "high",
+    "category": "Exposição de serviço",
+    "description": "O vsftpd aceita login `anonymous` e o diretório `backups/` contém `intranet-config.bak`, legível por qualquer pessoa.",
+    "evidence": "ftp> login anonymous\n230 Login successful.\nftp> ls backups\n-rw-r--r--  1 ftp ftp  2311 intranet-config.bak\n\n(conteúdo omitido do relatório — credencial guardada em loot/, fora do controle de versão)",
+    "remediation": "- Desabilitar `anonymous_enable` no vsftpd\n- Remover backups do diretório público\n- **Trocar a senha do banco**: ela deve ser considerada comprometida",
+    "source": "nmap_parse",
+    "score": 7.5,
+    "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+    "impact": "O arquivo traz usuário e senha do banco de dados da intranet em texto puro."
+  },
+  {
+    "id": "SNT-002",
+    "status": "confirmado",
+    "found_at": "2026-11-10T22:17:44-03:00",
+    "title": "Redis sem autenticação exposto na rede",
+    "target": "10.10.10.5:6379",
+    "severity": "critical",
+    "category": "Exposição de serviço",
+    "description": "O Redis 5.0.7 em **10.10.10.5:6379** aceita comandos sem senha (`requirepass` não definido) e escuta em todas as interfaces.",
+    "evidence": "$ redis-cli -h 10.10.10.5 INFO server\n# Server\nredis_version:5.0.7\nredis_mode:standalone\nos:Linux 5.4.0-216-generic x86_64\n\n$ redis-cli -h 10.10.10.5 DBSIZE\n(integer) 1842",
+    "remediation": "- Definir `requirepass` (ou ACLs no Redis 6+)\n- `bind 127.0.0.1` e `protected-mode yes`\n- Bloquear a porta 6379 no firewall\n- Renomear/desabilitar `CONFIG`, `FLUSHALL` e `DEBUG`",
+    "source": "nmap_parse",
+    "score": 9.8,
+    "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "impact": "Leitura e alteração de todos os dados em cache (incluindo sessões da intranet). Com `CONFIG SET dir`, um atacante pode gravar arquivos no servidor e chegar a execução de código.",
+    "references": [
+      "https://redis.io/docs/latest/operate/oss_and_stack/management/security/"
+    ]
+  },
+  {
+    "id": "SNT-003",
+    "status": "confirmado",
+    "found_at": "2026-11-10T22:17:44-03:00",
+    "title": "SMBv1 habilitado",
+    "target": "10.10.10.7:445",
+    "severity": "high",
+    "category": "Exposição de serviço",
+    "description": "O Samba em 10.10.10.7 ainda negocia o dialeto **NT LM 0.12 (SMBv1)**.",
+    "evidence": "nmap --script smb-protocols -p445 10.10.10.7\n  NT LM 0.12 (SMBv1) [dangerous, but default]",
+    "remediation": "No smb.conf: `server min protocol = SMB2_10`. Reinicie o serviço.",
+    "source": "nmap_parse",
+    "score": 7.5,
+    "cvss": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "references": [
+      "https://learn.microsoft.com/windows-server/storage/file-server/troubleshoot/detect-enable-and-disable-smbv1-v2-v3"
+    ]
+  },
+  {
+    "id": "SNT-004",
+    "status": "confirmado",
+    "found_at": "2026-11-10T22:17:44-03:00",
+    "title": "Assinatura SMB não exigida",
+    "target": "10.10.10.7:445",
+    "severity": "medium",
+    "category": "Exposição de serviço",
+    "description": "Permite ataques de relay NTLM na rede interna.",
+    "evidence": "nmap: 445/tcp open microsoft-ds Samba smbd 4.6.2",
+    "remediation": "No smb.conf: `server signing = mandatory`.",
+    "source": "nmap_parse",
+    "score": 4.2,
+    "cvss": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N"
+  },
+  {
+    "id": "SNT-005",
+    "status": "falso positivo",
+    "found_at": "2026-11-10T22:17:44-03:00",
+    "title": "RDP exposto",
+    "target": "10.10.10.7:3389",
+    "severity": "medium",
+    "category": "Exposição de serviço",
+    "description": "RDP aberto é alvo constante de força bruta e já teve falhas críticas (BlueKeep).",
+    "evidence": "nmap: 3389/tcp open ms-wbt-server xrdp",
+    "remediation": "Restrinja o acesso por firewall/VPN, desative o serviço se não for necessário e mantenha-o atualizado.",
+    "source": "nmap_parse"
+  },
+  {
+    "id": "SNT-006",
+    "status": "confirmado",
+    "found_at": "2026-11-10T22:18:08-03:00",
+    "title": "Painel da intranet sem limite de tentativas de login",
+    "target": "http://10.10.10.5/login",
+    "category": "A07 Identification and Authentication Failures",
+    "description": "O formulário de login aceitou 50 tentativas seguidas com senha errada sem bloqueio, atraso ou CAPTCHA (teste limitado a 50 tentativas, conforme as regras).",
+    "impact": "",
+    "evidence": "",
+    "remediation": "Bloqueio progressivo por conta/IP, atraso exponencial e MFA para contas administrativas.",
+    "references": [
+      "https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/"
+    ],
+    "evidence_files": [],
+    "source": "manual",
+    "score": 5.3,
+    "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+    "severity": "medium"
+  }
+]

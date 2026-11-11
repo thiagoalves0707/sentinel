@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Saída de EXEMPLO (laboratório fictício 10.10.10.0/24) para demonstrar o nmap_parse.py -->
+<nmaprun scanner="nmap" args="nmap -sV -sC -T3 -oX nmap-demo.xml 10.10.10.0/28" start="1762790400" version="7.95">
+  <host>
+    <status state="up"/>
+    <address addr="10.10.10.5" addrtype="ipv4"/>
+    <hostnames><hostname name="web01.lab.local" type="PTR"/></hostnames>
+    <ports>
+      <port protocol="tcp" portid="21"><state state="open"/>
+        <service name="ftp" product="vsftpd" version="3.0.3"/>
+        <script id="ftp-anon" output="Anonymous FTP login allowed (FTP code 230)&#xa;drwxr-xr-x  2 ftp ftp 4096 backups"/>
+      </port>
+      <port protocol="tcp" portid="22"><state state="open"/>
+        <service name="ssh" product="OpenSSH" version="8.2p1 Ubuntu 4ubuntu0.5" extrainfo="Ubuntu Linux; protocol 2.0"/>
+      </port>
+      <port protocol="tcp" portid="80"><state state="open"/>
+        <service name="http" product="Apache httpd" version="2.4.41" extrainfo="(Ubuntu)"/>
+        <script id="http-title" output="Intranet - Login"/>
+      </port>
+      <port protocol="tcp" portid="6379"><state state="open"/>
+        <service name="redis" product="Redis key-value store" version="5.0.7"/>
+      </port>
+    </ports>
+    <os><osmatch name="Linux 5.4" accuracy="95"/></os>
+  </host>
+  <host>
+    <status state="up"/>
+    <address addr="10.10.10.7" addrtype="ipv4"/>
+    <hostnames><hostname name="files.lab.local" type="PTR"/></hostnames>
+    <ports>
+      <port protocol="tcp" portid="139"><state state="open"/>
+        <service name="netbios-ssn" product="Samba smbd" version="4.6.2"/>
+      </port>
+      <port protocol="tcp" portid="445"><state state="open"/>
+        <service name="microsoft-ds" product="Samba smbd" version="4.6.2"/>
+        <script id="smb-protocols" output="dialects: &#xa;  NT LM 0.12 (SMBv1) [dangerous, but default]&#xa;  2.02&#xa;  3.11"/>
+        <script id="smb2-security-mode" output="3:1:1: &#xa;  Message signing enabled but not required"/>
+      </port>
+      <port protocol="tcp" portid="3389"><state state="open"/>
+        <service name="ms-wbt-server" product="xrdp"/>
+      </port>
+    </ports>
+  </host>
+  <host>
+    <status state="up"/>
+    <address addr="10.10.10.1" addrtype="ipv4"/>
+    <ports>
+      <port protocol="tcp" portid="443"><state state="open"/><service name="https" product="pfSense"/></port>
+    </ports>
+  </host>
+</nmaprun>

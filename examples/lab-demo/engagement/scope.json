@@ -1,0 +1,28 @@
+{
+  "name": "Laboratório Demo — Rede Interna",
+  "client": "Lab Sentinel (fictício)",
+  "mode": "ctf",
+  "authorization": {
+    "statement": "Laboratório próprio, rede isolada 10.10.10.0/28",
+    "recorded_at": "2026-11-10T22:17:43-03:00"
+  },
+  "window": {
+    "start": "",
+    "end": ""
+  },
+  "in_scope": [
+    "10.10.10.0/28",
+    "*.lab.local"
+  ],
+  "out_of_scope": [
+    "10.10.10.1"
+  ],
+  "rules": {
+    "dos": false,
+    "destructive": false,
+    "social_engineering": false,
+    "max_requests_per_second": 10,
+    "notes": "gateway 10.10.10.1 é da infraestrutura do lab"
+  },
+  "tester": "Thiago Alves Santana"
+}
